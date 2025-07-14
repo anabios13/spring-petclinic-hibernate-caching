@@ -75,8 +75,8 @@ public class FirstLevelCacheTest extends PostgresqlDbBaseTest {
   public void bulkUpdate() {
     Vet vet = em.find(Vet.class, 100);
     System.out.println("before: " + vet.isVip());
-    em.createQuery("update Vet v set v.isVip = true").executeUpdate();
-    vet.setLastName("Dowson");
+    em.createQuery("update Vet v set v.isVip = true").executeUpdate();//dirty read из за того, что подтянули сущность до обновления
+    vet.setLastName("Dowson");// обновляются все поля так что наше поле v.isVip будет false
     em.flush();
     System.out.println("after: " + vet.isVip());
   }
